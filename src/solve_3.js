@@ -6,9 +6,7 @@ function mapName(name) {
     return (name + "                  ")
         .substr(0, 11)
         .split ('')
-        .flatMap(c => c.charCodeAt(0)
-            .toString(2)
-            .split(''));
+        .flatMap(c => mapId(c.charCodeAt(0), 8));
 }
 
 /**
@@ -45,10 +43,10 @@ function calculateCheckSum(bits) {
  * @param {CanvasRect} ctx
  */
 function drawCat(bits, ctx) {
-    for (let i = 0; i < 16; i++) {
-        for (let j = 0; j < 8; j++) {
+    for (let i = 0; i < 8; i++) {
+        for (let j = 0; j < 16; j++) {
             if (bits[i * 8 + j] === '1') {
-                ctx.fillRect(7 + i * 8, 0 + j * 8, 8, 8);
+                ctx.fillRect(7 + j * 8, i * 8, 8, 8);
             }
         }
     }
@@ -93,6 +91,10 @@ function renderBarcode(catInfo, element) {
     let id = mapId(catInfo.id, 8);
     let birthDay = mapId(catInfo.birthday, 32);
     let bits = name.concat(id).concat(birthDay);
+    console.log(name);
+    console.log(id);
+    console.log(birthDay);
+    console.log(bits);
     let checkSum = calculateCheckSum(bits);
     drawCat(bits, ctx);
     drawCheckSum(checkSum, ctx);
