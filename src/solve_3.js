@@ -13,11 +13,13 @@ function mapName(name) {
 
 /**
  * @param {number} id
+ * @param {number} len
  * @returns {string[]}
  */
-function mapId(id) {
-    return id.toString(2)
-        .split('')
+function mapId(id, len) {
+    let s = id.toString(2);
+    while (s.length < len) s = '0' + s;
+    return s.split('');
 }
 
 /**
@@ -33,7 +35,7 @@ function calculateCheckSum(bits) {
                 s++;
             }
         }
-        sum.push("" + s);
+        sum.push("" + (s & 1));
     }
     return sum;
 }
@@ -43,10 +45,10 @@ function calculateCheckSum(bits) {
  * @param {CanvasRect} ctx
  */
 function drawCat(bits, ctx) {
-    for (let i = 0; i < 8; i++) {
-        for (let j = 0; j < 16; j++) {
+    for (let i = 0; i < 16; i++) {
+        for (let j = 0; j < 8; j++) {
             if (bits[i * 8 + j] === '1') {
-                ctx.fillRect(0 + i * 8, 7 + j * 8, 8, 8);
+                ctx.fillRect(7 + i * 8, 0 + j * 8, 8, 8);
             }
         }
     }
@@ -59,9 +61,21 @@ function drawCat(bits, ctx) {
 function drawCheckSum(bits, ctx) {
     for (let i = 0; i < 8; i++) {
         if (bits[i] === '1') {
-            ctx.fillRect(0 + i * 8, 142, 8, 8);
+            ctx.fillRect(142, 0 + i * 8, 8, 8);
         }
     }
+}
+
+/**
+ * @param {number} x
+ * @param {number} y
+ * @param {CanvasRect} ctx
+ */
+function drawBorder(x, y, ctx) {
+    ctx.fillRect(x, y, 7, 3);
+    ctx.fillRect(x, y, 3, 64);
+    ctx.fillRect(x, y + 61, 7, 3);
+    ctx.fillRect(x + 4, y, 3, 64);
 }
 
 /**
@@ -76,10 +90,13 @@ function renderBarcode(catInfo, element) {
      */
     let ctx = element.getContext('2d');
     let name = mapName(catInfo.name);
-    let id = mapId(catInfo.id);
-    let birthDay = mapId(catInfo.birthday);
+    let id = mapId(catInfo.id, 8);
+    let birthDay = mapId(catInfo.birthday, 32);
     let bits = name.concat(id).concat(birthDay);
     let checkSum = calculateCheckSum(bits);
     drawCat(bits, ctx);
     drawCheckSum(checkSum, ctx);
+    drawBorder(0, 0, ctx);
+    drawBorder(135, 0, ctx);
+    drawBorder(150, 0, ctx);
 }
