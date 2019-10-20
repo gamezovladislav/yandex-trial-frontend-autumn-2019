@@ -1,0 +1,18 @@
+{
+  "name": "yandex-frontend-trial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "task1": "node src/solve_1.js",
+    "task2": "node src/solve_2.js",
+    "task3": "node src/solve_3.js",
+    "task4": "node src/solve_4.js",
+    "task5": "node src/solve_5.js",
+    "task6": "node src/solve_6.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
