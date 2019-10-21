@@ -102,3 +102,22 @@ function renderBarcode(catInfo, element) {
     drawBorder(135, 0, ctx);
     drawBorder(150, 0, ctx);
 }
+
+let canvas;
+
+function init() {
+    if (!canvas) {
+        canvas = document.createElement('canvas');
+        document.getElementsByTagName('body')[0].appendChild(canvas);
+    } else {
+        canvas.getContext('2d').clearRect(0, 0, 200, 200);
+    }
+}
+
+/**
+ * @param obj {{name:string, id:number, birthday:number}}
+ */
+function run(obj) {
+    init();
+    renderBarcode(obj, canvas);
+}
